@@ -13,7 +13,9 @@ Hosted on GitHub Pages: (https://akshararamidi.github.io/Indiana-Spelling-List-Q
 
 ## Download
 <a href="6thGradeSpelling.zip" download>Download 6th Grade Indiana Spelling Quiz (ZIP)</a>
-<b href="4thGradeSpelling.zip" download>Download 4th Grade Indiana Spelling Quiz (ZIP)</b>
+
+<a href="4thGradeSpelling.zip" download>Download 4th Grade Indiana Spelling Quiz (ZIP)</a>
+
 
 ## DIRECTIONS
 1. Click Download Button Above
