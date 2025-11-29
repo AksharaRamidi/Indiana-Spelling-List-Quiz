@@ -9,6 +9,8 @@ Hosted on GitHub Pages: (https://github.com/AksharaRamidi/Spelling-List-Quiz)
 - Instant feedback and scoring
 - Easy to extend with new words
 
+## Download
+<a href="downloads/6thGradeSpelling.zip" download>Download 6th Grade Indiana Spelling Quiz (ZIP)</a>
 ## Installation
 1. Clone the repo:
    ```bash
