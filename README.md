@@ -1,7 +1,7 @@
 # Spelling Practice Quiz
 
 A simple spelling quiz website built with HTML and JSON.  
-Hosted on GitHub Pages: (https://github.com/AksharaRamidi/Spelling-List-Quiz)
+Hosted on GitHub Pages: (https://github.com/AksharaRamidi/Indiana-Spelling-List-Quiz)
 
 ## Features
 - Interactive spelling quiz
