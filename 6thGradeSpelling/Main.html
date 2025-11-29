@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Discovery Spell Bowl List Quiz</title>
+  <script src="SpellingList.js"></script> <!-- Make sure this contains your full wordList -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      text-align: center;
+      padding: 40px;
+    }
+    #quiz-box {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      display: inline-block;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input[type="text"], input[type="number"] {
+      padding: 10px;
+      width: 300px;
+      font-size: 16px;
+      margin: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 10px;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+    #wordDisplay {
+      margin-top: 10px;
+      font-size: 18px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔊 Indiana 6th grade Spell Bowl List Quiz</h1>
+  <div id="quiz-box">
+    <p><strong>Start from word #:</strong></p>
+    <input type="number" id="startIndex" min="0" max="1399" placeholder="e.g. 500" />
+    <button onclick="startQuiz()">Start Quiz</button>
+    <hr>
+    <p><strong>Listen to the word and type its spelling:</strong></p>
+    <button onclick="playWord()">🔈 Play Word</button>
+    <button onclick="playWordSlow()">🐢 Slow Pronunciation</button>
+    <button onclick="playDefinition()">📖 Play Definition</button>
+    <br>
+    <input type="text" id="userInput" placeholder="Type your spelling here" />
+    <br>
+    <button onclick="checkSpelling()">Check</button>
+    <button onclick="nextWord()">Next Word</button>
+    <div id="result"></div>
+    <div id="wordDisplay"></div>
+    <p id="score">Score: 0 / 0</p>
+    <p id="triesLeft">Tries left: 3</p>
+  </div>
+
+  <script>
+    let currentIndex = 0;
+    let currentWord = "";
+    let previousWord = "";
+    let score = 0;
+    let total = 0;
+    let tries = 3;
+
+    function startQuiz() {
+      const input = document.getElementById("startIndex").value;
+      const index = parseInt(input);
+      if (!isNaN(index) && index >= 0 && index < wordList.length) {
+        currentIndex = index;
+        score = 0;
+        total = 0;
+        document.getElementById("score").innerText = `Score: 0 / 0`;
+        nextWord();
+      } else {
+        alert("Please enter a valid starting index between 0 and " + (wordList.length - 1));
+      }
+    }
+
+
+function nextWord() {
+  currentIndex++;
+  if (currentIndex >= wordList.length) {
+    alert("You've reached the end of the word list!");
+    return;
+  }
+  currentWord = wordList[currentIndex];
+  tries = 3;
+  document.getElementById("userInput").value = "";
+  document.getElementById("result").innerText = "";
+  document.getElementById("wordDisplay").innerText = "";
+  document.getElementById("triesLeft").innerText = `Tries left: ${tries}`;
+  playWord();
+}
+
+    function playWord(rate = 1) {
+      if (!currentWord) return;
+      const utterance = new SpeechSynthesisUtterance(currentWord);
+      utterance.lang = "en-US";
+      utterance.rate = rate;
+      speechSynthesis.speak(utterance);
+    }
+
+    function playWordSlow() {
+      playWord(0.6);
+    }
+
+    async function playDefinition() {
+      try {
+        const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${currentWord}`);
+        const data = await response.json();
+        const def = data[0]?.meanings[0]?.definitions[0]?.definition || "Definition not found.";
+        const utterance = new SpeechSynthesisUtterance(def);
+        utterance.lang = "en-US";
+	utterance.rate = 0.7;
+        speechSynthesis.speak(utterance);
+      } catch (error) {
+        const utterance = new SpeechSynthesisUtterance("Error fetching definition.");
+        speechSynthesis.speak(utterance);
+      }
+    }
+
+    function checkSpelling() {
+      previousWord = wordList[currentIndex-1];
+      const input = document.getElementById("userInput").value.trim().toLowerCase();
+      if (input === currentWord.toLowerCase()) {
+        
+	score++;
+        total++;
+        document.getElementById("result").innerText = `✅ Correct!`;
+        document.getElementById("wordDisplay").innerText = `The word was: ${currentWord}`;
+        document.getElementById("score").innerText = `Score: ${score} / ${total}`;
+        <!-- This is a comment  nextWord();-->
+      } else {
+        tries--;
+        if (tries > 0) {
+          document.getElementById("result").innerText = `❌ Try again. Tries left: ${tries}`;
+          document.getElementById("triesLeft").innerText = `Tries left: ${tries}`;
+
+        } else {
+          total++;
+          document.getElementById("result").innerText = `❌ Incorrect.`;
+          document.getElementById("wordDisplay").innerText = `The correct spelling was: ${currentWord}`;
+          document.getElementById("score").innerText = `Score: ${score} / ${total}`;
+
+          <!-- This is a comment  nextWord();-->
+        }
+      }
+    }
+
+    window.onload = () => {
+      document.getElementById("wordDisplay").innerText = "";
+    };
+  </script>
+</body>
+</html>
